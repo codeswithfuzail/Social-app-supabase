@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Kindred</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+  <div class="app-shell">
+    <div id="shellMount"></div>
+
+    <main class="k-content">
+      <div class="k-topbar">
+        <button id="kMenuToggle" class="btn-k btn-k-ghost"><i class="bi bi-list"></i></button>
+        <div class="k-logo" style="font-size:1.2rem;"><span class="k-mark"
+            style="width:26px;height:26px;font-size:.8rem;">K</span>Kindred</div>
+        <img id="topbarAvatar" class="k-avatar" width="34" height="34" alt="">
+      </div>
+
+      <!-- Cover + profile header -->
+      <div class="k-card overflow-hidden mb-4" id="profileHeaderCard">
+        <div class="k-cover-wrap">
+          <img id="coverImg" class="k-cover-img" alt="Cover image">
+          <div class="k-cover-fade"></div>
+        </div>
+        <div class="px-4 pb-4">
+          <div class="k-profile-row">
+            <img id="profileAvatar" class="k-avatar k-profile-avatar" alt="Profile picture">
+            <div class="flex-grow-1 pt-3">
+              <div class="d-flex flex-wrap align-items-center gap-2 justify-content-between">
+                <div>
+                  <h2 id="profileFullName" class="font-display mb-0">Loading...</h2>
+                  <p id="profileUsername" class="text-muted mb-0">@...</p>
+                </div>
+                <div class="d-flex gap-2" id="profileActionButtons">
+                  <button class="btn-k btn-k-outline" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i
+                      class="bi bi-pencil"></i> Edit Profile</button>
+                  <button class="btn-k btn-k-primary" data-bs-toggle="modal" data-bs-target="#createPostModal"><i
+                      class="bi bi-plus-lg"></i> Create Post</button>
+                </div>
+              </div>
+              <p id="profileBio" class="mt-3 mb-2" style="max-width:640px;"></p>
+              <div class="d-flex flex-wrap gap-3 text-muted small mb-3" id="profileMeta"></div>
+              <div class="d-flex gap-4">
+                <div><strong id="statPosts">0</strong> <span class="text-muted">Posts</span></div>
+                <div><strong id="statFollowers">0</strong> <span class="text-muted">Followers</span></div>
+                <div><strong id="statFollowing">0</strong> <span class="text-muted">Following</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <h5 class="font-display mb-3">Recent Posts</h5>
+          <div id="myPostsList"></div>
+        </div>
+        <div class="col-lg-4">
+          <div class="k-card p-3 mb-3">
+            <h6 class="fw-semibold mb-3">Profile Details</h6>
+            <div id="profileDetailsCard" class="d-flex flex-column gap-2 small text-muted"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content k-modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title font-display">Edit profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfileForm">
+            <div class="row">
+              <div class="col-6 k-field"><label class="k-label">First name</label><input class="k-input"
+                  id="editFirstName"></div>
+              <div class="col-6 k-field"><label class="k-label">Last name</label><input class="k-input"
+                  id="editLastName"></div>
+            </div>
+            <div class="k-field"><label class="k-label">Username</label><input class="k-input" id="editUsername"></div>
+            <div class="row">
+              <div class="col-6 k-field"><label class="k-label">Age</label><input class="k-input" type="number"
+                  id="editAge"></div>
+              <div class="col-6 k-field"><label class="k-label">Gender</label>
+                <select class="k-select" id="editGender">
+                  <option value="">Prefer not to say</option>
+                  <option>Woman</option>
+                  <option>Man</option>
+                  <option>Non-binary</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 k-field"><label class="k-label">City</label><input class="k-input" id="editCity"></div>
+              <div class="col-6 k-field"><label class="k-label">Country</label><input class="k-input" id="editCountry">
+              </div>
+            </div>
+            <div class="k-field"><label class="k-label">Bio</label><textarea class="k-input" id="editBio"
+                rows="2"></textarea></div>
+            <button type="submit" class="btn-k btn-k-primary w-100" id="editProfileBtn">Save changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Post Modal -->
+  <div class="modal fade" id="createPostModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content k-modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title font-display">Create post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="createPostForm">
+            <textarea class="k-input mb-3" id="postContent" rows="3" placeholder="What's on your mind?"></textarea>
+            <ul class="nav nav-pills k-pill-tabs mb-2">
+              <li class="nav-item"><button class="nav-link active" type="button" data-media-tab="none">Text
+                  only</button></li>
+              <li class="nav-item"><button class="nav-link" type="button" data-media-tab="image">Image</button></li>
+              <li class="nav-item"><button class="nav-link" type="button" data-media-tab="video">Video</button></li>
+            </ul>
+            <div id="mediaPaneImage" style="display:none;">
+              <div class="k-field"><label class="k-label">Image URL</label><input class="k-input" type="url"
+                  id="postImageUrl" placeholder="https://..."></div>
+              <div class="k-field"><label class="k-label">or upload from device</label><input class="k-input"
+                  type="file" id="postImageFile" accept="image/*"></div>
+            </div>
+            <div id="mediaPaneVideo" style="display:none;">
+              <div class="k-field"><label class="k-label">Upload MP4 video</label><input class="k-input" type="file"
+                  id="postVideoFile" accept="video/mp4"></div>
+            </div>
+            <button type="submit" class="btn-k btn-k-primary w-100 mt-2" id="createPostBtn"><i class="bi bi-send"></i>
+              Post</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/posts.js"></script>
+  <script src="js/shell.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>

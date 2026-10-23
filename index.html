@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kindred</title>
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .loader {
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .spin {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 3px solid var(--border-strong);
+      border-top-color: var(--accent);
+      animation: spin 800ms linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loader">
+    <div class="spin"></div>
+    <div class="k-logo justify-content-center mb-2"><span class="k-mark">K</span>Kindred</div>
+    <p>Loading...</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script>
+    (async () => {
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        window.location.replace(session ? "homefeed.html" : "login.html");
+      } catch {
+        window.location.replace("login.html");
+      }
+    })();
+  </script>
+</body>
+
+</html>
